@@ -1,0 +1,2 @@
+# Preserve command output exactly; whitespace in progress logs is evidence.
+evidence/*.log -whitespace
