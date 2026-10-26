@@ -1,0 +1,565 @@
+{
+  "version": "1.0",
+  "minimum_hours": 18,
+  "unit": "Micrograms/cubic meter (25 C)",
+  "parameter": "81102",
+  "negative_values": "retain_and_flag",
+  "description": "Project screening policy, not EPA regulatory validity. QA issues are held for review. Informational and requested-exclusion events remain included.",
+  "qualifiers": {
+    "RA": {
+      "description": "African Dust.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RB": {
+      "description": "Asian Dust.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RC": {
+      "description": "Chemical Spills & Industrial Accidents.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RD": {
+      "description": "Cleanup After a Major Disaster.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RE": {
+      "description": "Demolition.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RF": {
+      "description": "Fire - Canadian.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RG": {
+      "description": "Fire - Mexico/Central America.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RH": {
+      "description": "Fireworks.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RI": {
+      "description": "High Pollen Count.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RJ": {
+      "description": "High Winds.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RK": {
+      "description": "Infrequent Large Gatherings.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RL": {
+      "description": "Other.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RM": {
+      "description": "Prescribed Fire.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RN": {
+      "description": "Seismic Activity.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RO": {
+      "description": "Stratospheric Ozone Intrusion.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RP": {
+      "description": "Structural Fire.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RQ": {
+      "description": "Terrorist Act.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RR": {
+      "description": "Unique Traffic Disruption.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RS": {
+      "description": "Volcanic Eruptions.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RT": {
+      "description": "Wildfire-U. S.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "1": {
+      "description": "Deviation from a CFR/Critical Criteria Requirement.",
+      "type": "QA",
+      "action": "review"
+    },
+    "1V": {
+      "description": "Data reviewed and validated.",
+      "type": "QA",
+      "action": "include"
+    },
+    "2": {
+      "description": "Operational Deviation.",
+      "type": "QA",
+      "action": "review"
+    },
+    "3": {
+      "description": "Field Issue.",
+      "type": "QA",
+      "action": "review"
+    },
+    "4": {
+      "description": "Lab Issue.",
+      "type": "QA",
+      "action": "review"
+    },
+    "5": {
+      "description": "Outlier.",
+      "type": "QA",
+      "action": "review"
+    },
+    "6": {
+      "description": "QAPP Issue.",
+      "type": "QA",
+      "action": "review"
+    },
+    "7": {
+      "description": "Below Lowest Calibration Level.",
+      "type": "QA",
+      "action": "review"
+    },
+    "9": {
+      "description": "Negative value detected - zero reported.",
+      "type": "QA",
+      "action": "review"
+    },
+    "CB": {
+      "description": "Values have been Blank Corrected.",
+      "type": "QA",
+      "action": "review"
+    },
+    "CC": {
+      "description": "Clean Canister Residue.",
+      "type": "QA",
+      "action": "review"
+    },
+    "CF": {
+      "description": "Canister Bias: NATTS/UATMP or other program’s TO-15/TO-15A VOC data for compounds that have failed certification for the canister.",
+      "type": "QA",
+      "action": "review"
+    },
+    "CL": {
+      "description": "Surrogate Recoveries Outside Control Limits.",
+      "type": "QA",
+      "action": "review"
+    },
+    "DI": {
+      "description": "Sample was diluted for analysis.",
+      "type": "QA",
+      "action": "review"
+    },
+    "DN": {
+      "description": "DNPH peak less than NATTS TAD requirement, reported value should be considered an estimate.",
+      "type": "QA",
+      "action": "review"
+    },
+    "EH": {
+      "description": "Estimated;  Exceeds Upper Range.",
+      "type": "QA",
+      "action": "review"
+    },
+    "FB": {
+      "description": "Field Blank Value Above Acceptable Limit.",
+      "type": "QA",
+      "action": "review"
+    },
+    "FX": {
+      "description": "Filter Integrity Issue.",
+      "type": "QA",
+      "action": "review"
+    },
+    "HT": {
+      "description": "Sample pick-up hold time exceeded.",
+      "type": "QA",
+      "action": "review"
+    },
+    "LB": {
+      "description": "Lab blank value above acceptable limit.",
+      "type": "QA",
+      "action": "review"
+    },
+    "LJ": {
+      "description": "Identification Of Analyte Is Acceptable; Reported Value Is An Estimate.",
+      "type": "QA",
+      "action": "review"
+    },
+    "LK": {
+      "description": "Analyte Identified; Reported Value May Be Biased High.",
+      "type": "QA",
+      "action": "review"
+    },
+    "LL": {
+      "description": "Analyte Identified; Reported Value May Be Biased Low.",
+      "type": "QA",
+      "action": "review"
+    },
+    "MD": {
+      "description": "Value less than MDL.",
+      "type": "QA",
+      "action": "include"
+    },
+    "MS": {
+      "description": "Value reported is 1/2 MDL substituted.",
+      "type": "QA",
+      "action": "review"
+    },
+    "MX": {
+      "description": "Matrix Effect.",
+      "type": "QA",
+      "action": "review"
+    },
+    "ND": {
+      "description": "No Value Detected, Zero Reported.",
+      "type": "QA",
+      "action": "review"
+    },
+    "NS": {
+      "description": "Influenced by nearby source.",
+      "type": "QA",
+      "action": "include"
+    },
+    "QP": {
+      "description": "Pressure Sensor Questionable.",
+      "type": "QA",
+      "action": "review"
+    },
+    "QT": {
+      "description": "Temperature Sensor Questionable.",
+      "type": "QA",
+      "action": "review"
+    },
+    "QX": {
+      "description": "Does not meet QC criteria.",
+      "type": "QA",
+      "action": "review"
+    },
+    "SB": {
+      "description": "Sampler Bias:  NATTS/UATMP Data for compounds that have failed certification for the sampler.",
+      "type": "QA",
+      "action": "review"
+    },
+    "SP": {
+      "description": "NATTS/UATMP data with Spike Recovery outside acceptance limits.",
+      "type": "QA",
+      "action": "review"
+    },
+    "SQ": {
+      "description": "Values Between SQL and MDL.",
+      "type": "QA",
+      "action": "review"
+    },
+    "SS": {
+      "description": "Value substituted from secondary monitor.",
+      "type": "QA",
+      "action": "review"
+    },
+    "SX": {
+      "description": "Does Not Meet Siting Criteria.",
+      "type": "QA",
+      "action": "review"
+    },
+    "TB": {
+      "description": "Trip Blank Value Above Acceptable Limit.",
+      "type": "QA",
+      "action": "review"
+    },
+    "TT": {
+      "description": "Transport Temperaure is Out of Specs.",
+      "type": "QA",
+      "action": "review"
+    },
+    "V": {
+      "description": "Validated Value.",
+      "type": "QA",
+      "action": "include"
+    },
+    "VB": {
+      "description": "Value below normal; no reason to invalidate.",
+      "type": "QA",
+      "action": "include"
+    },
+    "W": {
+      "description": "Flow Rate Average out of Spec.",
+      "type": "QA",
+      "action": "review"
+    },
+    "X": {
+      "description": "Filter Temperature Difference or Average out of Spec.",
+      "type": "QA",
+      "action": "review"
+    },
+    "XC": {
+      "description": "Canister certification expired",
+      "type": "QA",
+      "action": "review"
+    },
+    "XS": {
+      "description": "Traceable to a Standard Reference Photometer (SRP) with the Hearn (1961) 308.32 atm-1 cm-1 Ozone Cross-Section Value.",
+      "type": "QA",
+      "action": "review"
+    },
+    "Y": {
+      "description": "Elapsed Sample Time out of Spec.",
+      "type": "QA",
+      "action": "review"
+    },
+    "IA": {
+      "description": "African Dust.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IB": {
+      "description": "Asian Dust.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IC": {
+      "description": "Chem. Spills & Indust Accidents.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "ID": {
+      "description": "Cleanup After a Major Disaster.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IE": {
+      "description": "Demolition.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IF": {
+      "description": "Fire - Canadian.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IG": {
+      "description": "Fire - Mexico/Central America.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IH": {
+      "description": "Fireworks.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "II": {
+      "description": "High Pollen Count.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IJ": {
+      "description": "High Winds.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IK": {
+      "description": "Infrequent Large Gatherings.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IL": {
+      "description": "Other.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IM": {
+      "description": "Prescribed Fire.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IN": {
+      "description": "Seismic Activity.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IO": {
+      "description": "Stratospheric Ozone Intrusion.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IP": {
+      "description": "Structural Fire.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IQ": {
+      "description": "Terrorist Act.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IR": {
+      "description": "Unique Traffic Disruption.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IS": {
+      "description": "Volcanic Eruptions.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IT": {
+      "description": "Wildfire-U. S.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "J": {
+      "description": "Construction.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "E": {
+      "description": "Forest Fire.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "RU": {
+      "description": "Wildland Fire Use Fire-U. S.",
+      "type": "REQEXC",
+      "action": "include"
+    },
+    "8": {
+      "description": "QA/QC Unknown.",
+      "type": "QA",
+      "action": "review"
+    },
+    "PQ": {
+      "description": "Values Between PQL And MDL.",
+      "type": "QA",
+      "action": "review"
+    },
+    "T": {
+      "description": "Multiple PM2.5 Validity Flags.",
+      "type": "QA",
+      "action": "review"
+    },
+    "A": {
+      "description": "High Winds.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "B": {
+      "description": "Stratospheric Ozone Intrusion.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "C": {
+      "description": "Volcanic Eruption.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "D": {
+      "description": "Sandblasting.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "F": {
+      "description": "Structural Fire.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "G": {
+      "description": "High Pollen Count.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "H": {
+      "description": "Chem. Spills & Indust. Accidents.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "I": {
+      "description": "Unusual Traffic Congestion.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "IU": {
+      "description": "Wildland Fire Use Fire-U. S.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "K": {
+      "description": "Agricultural Tilling.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "L": {
+      "description": "Highway Construction.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "M": {
+      "description": "Rerouting of Traffic.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "N": {
+      "description": "Sanding/Salting of Streets.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "O": {
+      "description": "Infrequent Large Gatherings.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "P": {
+      "description": "Roofing Operations.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "Q": {
+      "description": "Prescribed Burning.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "R": {
+      "description": "Cleanup After a Major Disaster.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "S": {
+      "description": "Seismic Activity.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "U": {
+      "description": "Sahara Dust.",
+      "type": "INFORM",
+      "action": "include"
+    },
+    "Z": {
+      "description": "Other event.",
+      "type": "INFORM",
+      "action": "include"
+    }
+  }
+}

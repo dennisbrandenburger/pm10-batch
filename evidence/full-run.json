@@ -1,0 +1,38 @@
+{
+  "status": "succeeded",
+  "run_id": "1d24e7b7-c7fd-4ebd-a2f5-120469f0c104",
+  "source": {
+    "dataset": "epa_pm10_2024",
+    "year": 2024,
+    "sha256": "2db9732577123284e7f94b581b135c30feae5c7c2d8623d1def66db722d78da4",
+    "archive_bytes": 32122063,
+    "csv_bytes": 1089505956,
+    "url": "https://aqs.epa.gov/aqsweb/airdata/hourly_81102_2024.zip",
+    "retrieved_at": "2026-10-26T13:10:31.615441+00:00",
+    "acquisition": "https_download",
+    "http_headers": {
+      "ETag": "\"1ea24cf-65680039112ec\"",
+      "Last-Modified": "Mon, 13 Jul 2026 15:47:55 GMT"
+    },
+    "archive": "raw/2db9732577123284e7f94b581b135c30feae5c7c2d8623d1def66db722d78da4.zip"
+  },
+  "recipe_sha256": "a005c8383974db3134868b2e92cbbb528a23ef4de3911aeed2a8cb9c6e8c817a",
+  "metrics": {
+    "input_rows": 3870976,
+    "exact_duplicates_removed": 0,
+    "invalid_rows": 0,
+    "structural_rows": 3870976,
+    "conflicting_rows": 0,
+    "usable_rows": 3675791,
+    "negative_rows": 31283,
+    "flagged_rows": 260887,
+    "daily_rows": 163381,
+    "eligible_days": 152985,
+    "complete_days": 140235,
+    "monitor_count": 478,
+    "processing_seconds": 90.803
+  },
+  "result_sha256": "a0f65aeaf86ff9f6501cddafbd6e40f18cee7bff5592def8c87013d5462c71bc",
+  "row_count": 163381,
+  "total_seconds": 94.509
+}

@@ -1,0 +1,15 @@
+{
+  "dataset": "epa_pm10_2024",
+  "year": 2024,
+  "sha256": "2db9732577123284e7f94b581b135c30feae5c7c2d8623d1def66db722d78da4",
+  "archive_bytes": 32122063,
+  "csv_bytes": 1089505956,
+  "url": "https://aqs.epa.gov/aqsweb/airdata/hourly_81102_2024.zip",
+  "retrieved_at": "2026-10-26T13:10:31.615441+00:00",
+  "acquisition": "https_download",
+  "http_headers": {
+    "ETag": "\"1ea24cf-65680039112ec\"",
+    "Last-Modified": "Mon, 13 Jul 2026 15:47:55 GMT"
+  },
+  "archive": "raw/2db9732577123284e7f94b581b135c30feae5c7c2d8623d1def66db722d78da4.zip"
+}

@@ -1,0 +1,6 @@
+ Container pm10-batch-database-1 Running 
+ Container pm10-batch-database-1 Waiting 
+ Container pm10-batch-database-1 Healthy 
+ Container pm10-batch-transform-run-195dc1ce8804 Creating 
+ Container pm10-batch-transform-run-195dc1ce8804 Created 
+{"restored_database": "pm10_restore_test", "digest_and_rows": ["a0f65aeaf86ff9f6501cddafbd6e40f18cee7bff5592def8c87013d5462c71bc", 163381]}

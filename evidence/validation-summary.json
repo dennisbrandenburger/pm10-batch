@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-26",
+  "full_run_id": "1d24e7b7-c7fd-4ebd-a2f5-120469f0c104",
+  "recipe_sha256": "a005c8383974db3134868b2e92cbbb528a23ef4de3911aeed2a8cb9c6e8c817a",
+  "source_sha256": "2db9732577123284e7f94b581b135c30feae5c7c2d8623d1def66db722d78da4",
+  "result_sha256": "a0f65aeaf86ff9f6501cddafbd6e40f18cee7bff5592def8c87013d5462c71bc",
+  "input_rows": 3870976,
+  "daily_rows": 163381,
+  "tests_passed": 10,
+  "reference_passed": true,
+  "reference_daily_rows": 163381,
+  "pipeline_seconds": 94.509,
+  "container_wall_seconds": 97.57,
+  "sampled_max_container_memory_gib": 3.58,
+  "sampled_min_host_free_gib": 3.2514266967773438,
+  "environment": {
+    "platform": "macOS ARM64",
+    "vm": "Colima 0.10.3, VZ",
+    "vm_memory_gib": 6,
+    "vm_cpus": 4,
+    "spark": "4.2.0",
+    "java": "21",
+    "python": "3.10.12",
+    "postgres": "17.11"
+  },
+  "limitations": [
+    "Single physical host, no distributed Spark cluster",
+    "Observed Docker memory samples, not exact peak",
+    "No trained ML model or prediction accuracy claimed",
+    "GitHub publication and examiner access pending",
+    "No Phase 2 portal submission"
+  ]
+}

@@ -1,0 +1,10 @@
+ Container pm10-batch-database-1 Running 
+ Container pm10-batch-database-1 Waiting 
+ Container pm10-batch-database-1 Healthy 
+ Container pm10-batch-transform-run-eb6705c346fe Creating 
+ Container pm10-batch-transform-run-eb6705c346fe Created 
+{
+  "status": "skipped",
+  "reason": "Source, recipe and stored result unchanged",
+  "dataset": "epa_pm10_2024"
+}

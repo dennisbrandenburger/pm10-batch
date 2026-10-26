@@ -1,0 +1,7 @@
+ Container pm10-batch-database-1 Running 
+ Container pm10-batch-database-1 Waiting 
+ Container pm10-batch-database-1 Healthy 
+ Container pm10-batch-test-run-8762be56fe56 Creating 
+ Container pm10-batch-test-run-8762be56fe56 Created 
+..........                                                               [100%]
+10 passed in 15.46s

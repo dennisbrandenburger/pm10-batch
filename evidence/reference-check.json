@@ -1,0 +1,10 @@
+{
+  "input_rows": 3870976,
+  "daily_rows_checked": 163381,
+  "missing_days": 0,
+  "differences": [],
+  "max_absolute_float_error": 1.1368683772161603e-13,
+  "seconds": 28.313,
+  "method": "Independent streaming Python csv + Decimal aggregation, all daily rows; known duplicate-free snapshot",
+  "passed": true
+}
