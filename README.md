@@ -1,10 +1,21 @@
 # PM10-Datenpipeline
 
-Diese Batch-Pipeline bereitet stündliche PM10-Messungen der US-Umweltbehörde EPA für spätere Analysen und Modellversuche auf. Sie lädt Jahresdateien, prüft die Beobachtungen, berechnet Tagesmerkmale je Messreihe und veröffentlicht diese in PostgreSQL. Ein ML-Modell wird nicht trainiert.
+Die Pipeline lädt stündliche PM10-Messungen der US-Umweltbehörde EPA, prüft die Daten und berechnet Tagesmerkmale je Messreihe. Die Ergebnisse stehen in PostgreSQL für Analysen und spätere Modellversuche bereit.
+
+Der geprüfte Datensatz für 2024 umfasst **3.870.976 Beobachtungen**. Daraus entstehen **163.381 Tagesdatensätze**, die unabhängig nachgerechnet wurden. Ergebnisse und Testprotokolle stehen im [Prüfbericht](evidence/Pruefbericht.md).
 
 ## Schnellstart
 
-Voraussetzungen: Docker mit Compose, Python 3 für das lokale Einrichtungsskript, etwa 6 GiB für die Docker-VM und 4 CPU-Kerne. Für eine Neuinstallation sind **8 GiB freier Speicher als Arbeitsreserve** sinnvoll. Messwerte zur geprüften Umgebung stehen in `evidence/`.
+Voraussetzungen: laufende Docker-Umgebung mit Compose und Python 3. Für die Docker-VM sind 6 GiB RAM und vier CPU-Kerne vorgesehen. Empfohlen werden 8 GiB freier Plattenplatz.
+
+Optional unter macOS mit Colima, vor dem ersten Lauf:
+
+```sh
+colima start --profile de-pm10 --cpu 4 --memory 6 --activate=false
+export DOCKER_CONTEXT=colima-de-pm10
+```
+
+Im Repository-Verzeichnis:
 
 ```sh
 ./scripts/setup.sh
@@ -12,14 +23,7 @@ docker compose build transform
 ./scripts/run.sh 2024
 ```
 
-`setup.sh` erzeugt zwei zufällige lokale Passwörter und die UID/GID-Konfiguration. Diese Dateien gehören nicht ins Git-Repository. `run.sh` lädt die Quelle erneut und prüft, ob eine Verarbeitung nötig ist. Compose startet die Datenbank ohne einen nach außen geöffneten Port.
-
-Bei Verwendung von Colima kann die Umgebung in einem eigenen Profil gestartet werden:
-
-```sh
-colima start --profile de-pm10 --cpu 4 --memory 6 --activate=false
-export DOCKER_CONTEXT=colima-de-pm10
-```
+`setup.sh` erzeugt lokale Zugangsdaten und die UID/GID-Konfiguration. `run.sh` startet die Datenbank, lädt die Quelle und verarbeitet sie bei Änderungen erneut. Der Datenbankport bleibt innerhalb des Compose-Netzwerks.
 
 Wo `docker compose` nicht als Plugin installiert ist, verwenden die Skripte automatisch `docker-compose`. Die allgemeinen Befehle lassen sich entsprechend ersetzen.
 
@@ -32,7 +36,7 @@ Wo `docker compose` nicht als Plugin installiert ist, verwenden die Skripte auto
 | `database` | Tagesmerkmale, aktive Version und Laufhistorie bereitstellen | Docker-Volume `postgres_data` |
 | `test` | Synthetische Prüfbeispiele und Transaktionstests | Ausschließlich separate Datenbank `pm10_test` |
 
-Die Einmal-Dienste sind getrennte Container. Sie teilen sich ein Image, damit Spark und Python nicht mehrfach installiert werden. `database` verwendet ein eigenes PostgreSQL-Image. Beide Basis-Images sind durch Version und Digest festgelegt. Python-Abhängigkeiten sind vollständig auf Versionen festgelegt.
+Die Verarbeitungsdienste laufen als getrennte Container mit einem gemeinsamen Image. PostgreSQL verwendet ein eigenes Image. Beide Basis-Images sind über Digests festgelegt, die Python-Abhängigkeiten über feste Versionsnummern.
 
 ## Was gespeichert wird
 
@@ -46,14 +50,17 @@ Eine Messreihe wird durch Bundesstaat, County, Standort, Parameter und POC ident
 - Kennzeichnung, ob mindestens 18 verwendbare Stunden und genau eine Messmethode vorliegen.
 - Verknüpfung zum Verarbeitungslauf und zum Originalarchiv.
 
-Die Sicht `model_candidates` enthält Tage, die diese Projektregel erfüllen. Das sind mögliche Eingaben für ein späteres Modell, **keine amtlich zertifizierten Tageswerte**. Die Qualitätsmerkmale bleiben auch in der Sicht sichtbar.
+Die Sicht `model_candidates` enthält Tage mit mindestens 18 verwendbaren Stunden und genau einer Messmethode. Diese Auswahlregel dient der späteren Analyse und ist keine amtliche Gültigkeitsbewertung. Die Qualitätszähler bleiben in der Sicht erhalten.
 
 ## Ergebnis ansehen
 
 ```sh
 docker compose run --rm transform status
 docker compose exec -T database psql -U pm10 -d pm10 -c \
-  'SELECT state,county,site,poc,day,n_usable,mean_pm10,n_negative FROM model_candidates ORDER BY state,county,site,poc,day LIMIT 10;'
+  'SELECT state, county, site, poc, day, n_usable, mean_pm10, n_negative
+   FROM model_candidates
+   ORDER BY state, county, site, poc, day
+   LIMIT 10;'
 ```
 
 Für eigene Abfragen steht die Tabelle `daily_feature` zur Verfügung. `pipeline_run` dokumentiert erfolgreiche, fehlgeschlagene oder unterbrochene Läufe. `active_dataset` zeigt die aktuell veröffentlichte Version.
@@ -61,13 +68,10 @@ Für eigene Abfragen steht die Tabelle `daily_feature` zur Verfügung. `pipeline
 ## Tests und Nachweise
 
 ```sh
-./scripts/test.sh -q -p no:cacheprovider /app/tests
-python3 scripts/measure_run.py
+./scripts/test.sh
 ```
 
-Die Messung verweigert einen Start unter 2 GiB freiem Host-Speicher und stoppt bei weniger als 1 GiB Reserve. Docker-Statistiken sind Stichproben und kein Nachweis des exakten Speichermaximums. Auf stark belasteten Rechnern ist mehr Reserve nötig.
-
-Die Tests prüfen unter anderem Jahreswechsel zwischen Lokalzeit und GMT, negative Messwerte, Qualitätskennzeichen, widersprüchliche Beobachtungen, genaue Wiederholungen, unvollständige Tage, Rollback, Wiederholungsschutz, Ergebnisbeschädigungen und konkurrierende Schreiber. Die Testdatenbank ist vom produktiven Ergebnis getrennt.
+Die zehn Tests decken unter anderem Zeitgrenzen, Qualitätsregeln, doppelte und widersprüchliche Beobachtungen, unvollständige Tage sowie Rollback und Wiederholungsschutz ab. Datenbanktests verwenden die separate Datenbank `pm10_test`. Die unabhängige Nachrechnung des vollständigen Datensatzes und die Wiederherstellung einer Sicherung sind zusätzlich in `evidence/` dokumentiert.
 
 Weitere Erläuterungen:
 
@@ -79,4 +83,4 @@ Weitere Erläuterungen:
 
 ## Projektgrenzen
 
-Der Nachweis erfolgt lokal auf einem ARM64-Mac. Ein zweiter physischer Rechner und ein verteilter Spark-Cluster werden damit nicht getestet. Docker erleichtert die Übertragbarkeit, ersetzt diesen Nachweis aber nicht. Das Projekt enthält keine behördliche Grenzwertbewertung, keine Prognosegüte und keine Anwendung zur Gesundheitsberatung. Für eine spätere ML-Studie wären Zielvariable, zeitliche Validierung, fehlende Zeiträume und Selektionswirkungen der Qualitätsregeln gesondert zu untersuchen.
+Geprüft wurde auf einem ARM64-Mac. Die Ausführung auf einem zweiten Rechner und in einem verteilten Spark-Cluster steht noch aus. Ein ML-Modell gehört nicht zum Projekt. Dafür müssten unter anderem Zielvariable, zeitliche Validierung und der Einfluss der Qualitätsauswahl gesondert untersucht werden.

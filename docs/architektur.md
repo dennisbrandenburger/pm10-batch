@@ -13,15 +13,15 @@ flowchart LR
     G --> H[Tagesmerkmale für spätere Analysen]
 ```
 
-Die Dienste sind bewusst klein gehalten. Eine zusätzliche Nachrichtenwarteschlange oder ein dauerhaft laufender Orchestrierungsdienst ist für die quartalsweise Verarbeitung einer Jahresdatei nicht erforderlich. Die Reihenfolge ist durch das Startskript und einen erfolgreichen Exit-Code festgelegt.
+Das Startskript führt Datenaufnahme und Verarbeitung nacheinander aus. Jeder Schritt muss erfolgreich enden, bevor der nächste startet. Für die vorgesehene quartalsweise Verarbeitung ist kein dauerhaft laufender Orchestrierungsdienst eingerichtet.
 
 ## Python und Spark
 
-Python übernimmt Netzwerkzugriff, Archivprüfung, Protokolle und Datenbanksteuerung. Spark übernimmt die Verarbeitung der stündlichen Beobachtungen. Die Eingabespalten werden ausdrücklich als Strings definiert und anschließend kontrolliert konvertiert. Es gibt keine von Stichproben abhängige automatische Schemaerkennung und keine Python-UDF im Transformationspfad.
+Python übernimmt Download, Archivprüfung, Protokolle und Datenbanksteuerung. Spark verarbeitet die stündlichen Beobachtungen. Die Eingabespalten werden als Strings eingelesen und anschließend mit expliziten Typ- und Formatprüfungen konvertiert. Die Transformation verwendet die eingebauten Spark-Funktionen.
 
 Das ZIP enthält eine einzelne große CSV. Sie wird beim Arbeitslauf in gzip-Dateien zu jeweils höchstens 100.000 Beobachtungen aufgeteilt. So können mehrere Spark-Aufgaben gleichzeitig lesen, ohne zusätzlich die gesamte unkomprimierte Datei auf dem Host abzulegen. Es entstehen neue Arbeitsdateien, die unveränderte Originalquelle bleibt daneben erhalten. Nach Abschluss oder behandeltem Fehler werden die Arbeitsdateien entfernt.
 
-Der lokale Spark-Prozess verwendet vier Threads. Auf dieser Datenmenge wäre auch eine schlankere Lösung denkbar. Spark bietet einen nachvollziehbaren Weg zu verteilter Verarbeitung, verursacht lokal jedoch JVM-, Shuffle- und Speicheraufwand. Die aktuelle Veröffentlichung über einen einzelnen PostgreSQL-Schreiber und die serielle ZIP-Aufteilung begrenzen die Skalierung. Clusterbetrieb wäre eine eigene Weiterentwicklung und wird nicht als bereits nachgewiesen dargestellt.
+Spark verwendet lokal vier Threads. Für diese Datenmenge wäre auch eine kleinere Lösung möglich. Spark unterstützt verteilte Verarbeitung, bringt lokal aber zusätzlichen Betriebsaufwand mit sich. Die serielle ZIP-Aufteilung und der einzelne PostgreSQL-Schreiber begrenzen die Skalierung. Ein Clusterbetrieb müsste diese beiden Schritte berücksichtigen und separat getestet werden.
 
 ## Veröffentlichung und Wiederanlauf
 
@@ -33,7 +33,7 @@ Eine wiederholte Ausführung überspringt die Berechnung nur dann, wenn Quellhas
 
 ## Speicherung und Zugriff
 
-Rohdaten und Verarbeitungsauszüge liegen in einem lokalen Bind-Mount. Die Datenbank liegt in einem benannten Docker-Volume. Im Repository liegen Code und kleine, überprüfbare Nachweise, keine großen Jahresdateien oder Universitätsunterlagen.
+Rohdaten und Verarbeitungsauszüge liegen in einem lokalen Bind-Mount, die Datenbank in einem benannten Docker-Volume. Das Repository enthält Code, Konfiguration, Dokumentation und Prüfergebnisse. Die Quelldateien werden beim Einrichten heruntergeladen.
 
 Der Pipeline-Datenbanknutzer ist kein Superuser und darf keine Rollen oder Datenbanken anlegen. Der administrative Nutzer hat ein eigenes Passwort. Der Datenbankport wird nicht am Host veröffentlicht. Die Quelle enthält öffentlich zugängliche Umweltmessungen und Standortkoordinaten, keine hier verarbeiteten personenbezogenen Datensätze. Passwörter und Laufverzeichnisse sind von Git ausgeschlossen.
 
