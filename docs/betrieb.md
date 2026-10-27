@@ -8,7 +8,7 @@ Das Projekt nutzt 2024 als festen Referenzdatensatz. Der ausführbare Befehl ist
 ./scripts/run.sh 2024
 ```
 
-In einem laufenden Betrieb würden die fachlich relevanten Jahresdateien geprüft, beispielsweise das laufende und das vorherige Jahr. Ein Aufruf zu Quartalsbeginn reicht für die gewählte Aufgabenstellung. EPA aktualisiert AirData-Dateien nicht mit jeder einzelnen Messung. Ein unveränderter Abruf ist deshalb ein erwarteter Fall. Ein Zeitplan wird hier dokumentiert, aber nicht ungefragt auf dem privaten Rechner installiert.
+In einem laufenden Betrieb würden die fachlich relevanten Jahresdateien geprüft, beispielsweise das laufende und das vorherige Jahr. Ein Aufruf zu Quartalsbeginn reicht für die gewählte Aufgabenstellung. EPA aktualisiert AirData-Dateien nicht mit jeder einzelnen Messung. Ein unveränderter Abruf ist deshalb ein erwarteter Fall. Eine automatische Ausführung ist nicht eingerichtet.
 
 Der Download wird zunächst unter einem temporären Namen gespeichert. Erst nach ZIP-, Header- und Hashprüfung entsteht ein gültiges Abrufprotokoll. Bei einem Netzwerkfehler bleibt die bisherige Quelle verfügbar, der neue Befehl endet mit einem Fehlercode. Nach Behebung kann derselbe Befehl wiederholt werden.
 
@@ -60,4 +60,4 @@ Danach Zeilenzahlen und Ergebnis-Hash mit dem Original vergleichen. Die Testdate
 
 ## Zugangsdaten und Weitergabe
 
-`secrets/`, `.env` und `runtime/` bleiben lokal. Auf einem anderen Rechner erzeugt `setup.sh` neue Zugangsdaten. Die GitHub-Abgabe benötigt nur den Repository-Link. Ob das Repository öffentlich ist oder Prüferzugriff auf ein privates Repository eingerichtet wird, muss vor der Einreichung konkret geprüft werden. Universitätsaufgaben und persönliche Hilfsmittelprotokolle werden nicht in das Code-Repository übernommen.
+`secrets/`, `.env` und `runtime/` bleiben lokal. Auf einem anderen Rechner erzeugt `setup.sh` neue Zugangsdaten. Das Repository enthält den Code, die Konfiguration, die Dokumentation und die Prüfergebnisse. Rohdaten und Zugangsdaten werden auf dem Zielrechner separat eingerichtet.

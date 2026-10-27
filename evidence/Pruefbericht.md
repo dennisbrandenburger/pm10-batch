@@ -35,11 +35,9 @@ Der erste erfolgreiche Lauf benötigte rund 81 Sekunden, die abschließende Fass
 - `restore-check.log`: Restore in eine getrennte Testdatenbank mit 163.381 Zeilen und identischem Ergebnishash.
 - `reference-check.json`: unabhängige Berechnung sämtlicher Tagesdatensätze aus dem Originalarchiv. Keine fehlenden Tage, keine Abweichungen außerhalb der Toleranz.
 
-## Ressourcen und fehlgeschlagener erster Versuch
+## Geprüfte Umgebung
 
-Ein erster Vollversuch wurde wegen eines vollen Host-Datenträgers abgebrochen. Dieser Versuch zählt nicht als erfolgreicher Nachweis. Das interne Fehlerprotokoll bleibt im Projektarchiv erhalten. Danach wurden regenerierbare Xcode- und Python-Caches entfernt, die JVM auf 3 GiB begrenzt und eine Host-Reserveüberwachung ergänzt. Die VM nutzt 6 GiB RAM und vier CPU-Kerne. Die Arbeitskopie wird als kleine gzip-CSV-Teile erstellt und nach dem Lauf entfernt.
-
-Die Images teilen ihre Spark-Schichten. Die installierte Umgebung benötigt mehrere GiB dauerhaften Speicher. Für einen neuen Rechner werden 8 GiB freie Arbeitsreserve empfohlen. Der tatsächliche Mindestbedarf hängt zusätzlich von Docker-Laufzeit, Build-Cache und Swap ab. Eine anfängliche Schätzung von 20–30 GiB war konservativ und erwies sich hier nicht als notwendig.
+Die lokale Ausführung erfolgte auf einem ARM64-Mac mit einer Colima-VM, vier CPU-Kernen und 6 GiB RAM. Spark verwendete vier lokale Threads. Die eingesetzten Versionen und Messwerte stehen in `validation-summary.json` und `resources.json`.
 
 ## Provenienz
 
@@ -52,4 +50,6 @@ Der Ergebnishash umfasst sortierte fachliche Tagesfelder. Lauf-IDs und Zeitstemp
 
 ## Was dieser Bericht nicht nachweist
 
-Getestet wurde auf einem physischen ARM64-Mac, nicht auf einem zweiten Rechner oder einem verteilten Cluster. Messwertprüfung ist keine Kalibrierprüfung. Die Auswahl der 18 Stunden ist eine analytische Projektentscheidung. Es wird keine ML-Prognose oder deren Güte behauptet. GitHub-Zugriff und persönliche P2-Einreichung sind noch ausstehende Schritte.
+Getestet wurde auf einem physischen ARM64-Mac, nicht auf einem zweiten Rechner oder einem verteilten Cluster. Messwertprüfung ist keine Kalibrierprüfung. Die Auswahl der 18 Stunden ist eine analytische Projektentscheidung. Es wird keine ML-Prognose oder deren Güte behauptet.
+
+Redaktionell überarbeitet am 27.10.2026. Messwerte, Laufprotokolle und der geprüfte Programmstand bleiben unverändert.

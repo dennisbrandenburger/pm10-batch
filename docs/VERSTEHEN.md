@@ -25,7 +25,7 @@ Die Grenze von 18 Stunden ist unsere dokumentierte Auswahl für spätere Analyse
 
 Wer Luftbelastung untersuchen oder ein Modell entwickeln möchte, braucht konsistente, nachvollziehbare Eingaben. Diese Arbeit lässt sich nicht durch einen einzelnen manuellen CSV-Import zuverlässig erledigen: Die Quelle kann sich ändern, Messungen können problematisch sein und Aktualisierungen können scheitern. Unsere Pipeline macht die Aufbereitung wiederholbar und hält die Herkunft sichtbar.
 
-Ein späteres Modell könnte zum Beispiel Tageskonzentrationen vorhersagen. Dafür müssten zunächst eine konkrete Vorhersagefrage, zusätzliche Einflussgrößen wie Wetter und eine saubere zeitliche Validierung festgelegt werden. Eine gute Datenpipeline ist dafür eine Voraussetzung. Sie beweist noch keine Vorhersagegüte. Ein solches Modell gehört hier nicht zum umzusetzen­den Umfang.
+Ein späteres Modell könnte zum Beispiel Tageskonzentrationen vorhersagen. Dafür müssten zunächst eine konkrete Vorhersagefrage, zusätzliche Einflussgrößen wie Wetter und eine saubere zeitliche Validierung festgelegt werden. Eine gute Datenpipeline ist dafür eine Voraussetzung. Sie beweist noch keine Vorhersagegüte. Ein solches Modell gehört hier nicht zum umzusetzenden Umfang.
 
 ## Was du erklären können solltest
 

@@ -4,7 +4,7 @@ Diese Batch-Pipeline bereitet stündliche PM10-Messungen der US-Umweltbehörde E
 
 ## Schnellstart
 
-Voraussetzungen: Docker mit Compose, Python 3 für das lokale Einrichtungsskript, etwa 6 GiB für die Docker-VM und 4 CPU-Kerne. Für eine Neuinstallation sind **8 GiB freier Speicher als Arbeitsreserve** sinnvoll. Der gemessene Bedarf dieses Rechners steht in `evidence/`; Swap und andere Programme können den Host-Verbrauch erhöhen.
+Voraussetzungen: Docker mit Compose, Python 3 für das lokale Einrichtungsskript, etwa 6 GiB für die Docker-VM und 4 CPU-Kerne. Für eine Neuinstallation sind **8 GiB freier Speicher als Arbeitsreserve** sinnvoll. Messwerte zur geprüften Umgebung stehen in `evidence/`.
 
 ```sh
 ./scripts/setup.sh
@@ -14,7 +14,7 @@ docker compose build transform
 
 `setup.sh` erzeugt zwei zufällige lokale Passwörter und die UID/GID-Konfiguration. Diese Dateien gehören nicht ins Git-Repository. `run.sh` lädt die Quelle erneut und prüft, ob eine Verarbeitung nötig ist. Compose startet die Datenbank ohne einen nach außen geöffneten Port.
 
-Auf diesem Mac läuft ein eigenes Colima-Profil. Vor den Befehlen wird hier gesetzt:
+Bei Verwendung von Colima kann die Umgebung in einem eigenen Profil gestartet werden:
 
 ```sh
 colima start --profile de-pm10 --cpu 4 --memory 6 --activate=false

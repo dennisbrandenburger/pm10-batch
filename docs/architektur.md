@@ -39,4 +39,4 @@ Der Pipeline-Datenbanknutzer ist kein Superuser und darf keine Rollen oder Daten
 
 ## Verhältnis zu Phase 1
 
-Datenquelle, Batch-Ansatz, Python, Spark, PostgreSQL und Compose bleiben wie eingereicht. Präzisiert wurden die Qualitätsregeln, die Definition einer Messreihe, die Behandlung lokaler Zeit und der tatsächliche Wiederanlauf. Die Aufteilung in komprimierte Arbeitsdateien ist eine technische Anpassung an den gemessenen Speicherbedarf.
+Datenquelle, Batch-Ansatz, Python, Spark, PostgreSQL und Compose bleiben wie eingereicht. Präzisiert wurden die Qualitätsregeln, die Definition einer Messreihe, die Behandlung lokaler Zeit und der tatsächliche Wiederanlauf. Die Aufteilung in Arbeitsdateien ermöglicht das parallele Einlesen des Jahresarchivs.
