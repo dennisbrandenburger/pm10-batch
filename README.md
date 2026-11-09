@@ -38,6 +38,12 @@ Wo `docker compose` nicht als Plugin installiert ist, verwenden die Skripte auto
 
 Die Verarbeitungsdienste laufen als getrennte Container mit einem gemeinsamen Image. PostgreSQL verwendet ein eigenes Image. Beide Basis-Images sind über Digests festgelegt, die Python-Abhängigkeiten über feste Versionsnummern.
 
+## Orientierung im Code
+
+`scripts/run.sh` startet die Datenbank und führt Aufnahme und Verarbeitung nacheinander aus. Die Befehle sind in `pm10/__main__.py` verbunden. `pm10/ingest.py` lädt und prüft das Archiv, `pm10/transform.py` berechnet mit Spark die Tagesmerkmale, `pm10/store.py` prüft den bisherigen Stand und veröffentlicht neue Ergebnisse in einer Datenbanktransaktion.
+
+`compose.yaml` beschreibt die Dienste und ihre Verbindungen. Die Auswahlregeln stehen in `config/quality.json`, Tabellen und Sichten in `sql/schema.sql`. `tests/` enthält die automatisierten Prüffälle, `evidence/` die Nachweise des vollständigen Datenlaufs.
+
 ## Was gespeichert wird
 
 Eine Messreihe wird durch Bundesstaat, County, Standort, Parameter und POC identifiziert. POC unterscheidet mehrere Messreihen am selben Standort. Ein Tagesdatensatz enthält unter anderem:
