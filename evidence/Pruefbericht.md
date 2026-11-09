@@ -2,7 +2,7 @@
 
 ## Ergebnis
 
-Die vollständige lokale Verarbeitung des EPA-Jahresarchivs ist erfolgreich. Die abschließende Fassung besteht **10 automatisierte Tests**. Eine unabhängige Python-/Decimal-Referenz bestätigt **alle 163.381 Tagesdatensätze**.
+Das vollständige EPA-Jahresarchiv wurde lokal verarbeitet. Alle zehn automatisierten Tests bestanden. Eine separate Berechnung mit Python und Decimal bestätigte sämtliche 163.381 Tagesdatensätze.
 
 | Größe | Gemessener Wert |
 |---|---:|
@@ -26,7 +26,7 @@ Die vollständige lokale Verarbeitung des EPA-Jahresarchivs ist erfolgreich. Die
 
 Der erste erfolgreiche Lauf benötigte rund 81 Sekunden, die abschließende Fassung rund 95 Sekunden. Das sind einzelne Messungen auf einem gemeinsam genutzten Rechner, kein statistischer Leistungsbenchmark. Die Referenz toleriert 1e-9 absolute beziehungsweise 1e-10 relative Abweichung. Alle ganzen Zähler und Auswahlentscheidungen stimmen exakt überein.
 
-## Funktionale Nachweise
+## Tests und Kontrollen
 
 - `tests.log`: 10 Tests bestanden. Enthalten sind ZIP-Inhalt, Hash und CRC, Zeit-/Einheitenprüfung, unvollständige Tage, Methodenwechsel, negative Werte, Ereignis- und QA-Kennzeichen, widersprüchliche und gleiche Zeilen sowie unbekannte Codes.
 - Datenbanktest: Fehler nach DELETE und vor INSERT führt zum Rollback. Alte Ergebnisprüfsumme bleibt erhalten. Geänderte Eingaben/Regeln, beschädigte oder fehlende Ergebnisse werden erkannt. Konkurrierender Schreiber wird abgewiesen. Die Pipeline-Rolle ist kein Superuser.
@@ -39,16 +39,16 @@ Der erste erfolgreiche Lauf benötigte rund 81 Sekunden, die abschließende Fass
 
 Die lokale Ausführung erfolgte auf einem ARM64-Mac mit einer Colima-VM, vier CPU-Kernen und 6 GiB RAM. Spark verwendete vier lokale Threads. Die eingesetzten Versionen und Messwerte stehen in `validation-summary.json` und `resources.json`.
 
-## Provenienz
+## Prüfsummen und Laufkennung
 
 - Run-ID: `1d24e7b7-c7fd-4ebd-a2f5-120469f0c104`
 - Quellhash: `2db9732577123284e7f94b581b135c30feae5c7c2d8623d1def66db722d78da4`
 - Rezepthash: `a005c8383974db3134868b2e92cbbb528a23ef4de3911aeed2a8cb9c6e8c817a`
 - Ergebnishash: `a0f65aeaf86ff9f6501cddafbd6e40f18cee7bff5592def8c87013d5462c71bc`
 
-Der Ergebnishash umfasst sortierte fachliche Tagesfelder. Lauf-IDs und Zeitstempel sind darin nicht enthalten. Das Rechenrezept umfasst die im Programm definierten Code-, Regel- und Versionsbestandteile. Git dokumentiert den zugehörigen Quellstand. Die Quellenangaben stehen in `docs/quellen.md`.
+Die Ergebnisprüfsumme wird aus den sortierten fachlichen Tagesfeldern berechnet. Lauf-IDs und Zeitstempel gehen nicht ein. Die Prüfsumme des Rechenrezepts berücksichtigt die im Programm festgelegten Dateien und Softwareversionen. Der zugehörige Quellstand ist in Git dokumentiert, die Quellen stehen in `docs/quellen.md`.
 
-## Was dieser Bericht nicht nachweist
+## Grenzen der Prüfung
 
 Getestet wurde auf einem physischen ARM64-Mac, nicht auf einem zweiten Rechner oder einem verteilten Cluster. Messwertprüfung ist keine Kalibrierprüfung. Die Auswahl der 18 Stunden ist eine analytische Projektentscheidung. Es wird keine ML-Prognose oder deren Güte behauptet.
 

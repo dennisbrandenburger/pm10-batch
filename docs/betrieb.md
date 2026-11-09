@@ -2,17 +2,17 @@
 
 ## Regelmäßiger Lauf
 
-Das Projekt nutzt 2024 als festen Referenzdatensatz. Der ausführbare Befehl ist:
+Das Projekt verwendet die Jahresdatei für 2024 als Referenz. Der Lauf wird so gestartet:
 
 ```sh
 ./scripts/run.sh 2024
 ```
 
-In einem laufenden Betrieb würden die fachlich relevanten Jahresdateien geprüft, beispielsweise das laufende und das vorherige Jahr. Ein Aufruf zu Quartalsbeginn reicht für die gewählte Aufgabenstellung. EPA aktualisiert AirData-Dateien nicht mit jeder einzelnen Messung. Ein unveränderter Abruf ist deshalb ein erwarteter Fall. Eine automatische Ausführung ist nicht eingerichtet.
+Im laufenden Betrieb würden beispielsweise das aktuelle und das vorherige Jahr abgerufen. Für die gewählte Aufgabenstellung ist ein Aufruf zu Quartalsbeginn vorgesehen. EPA aktualisiert die AirData-Dateien nicht mit jeder einzelnen Messung. Deshalb kann ein erneuter Abruf dieselbe Datei liefern. Eine automatische Ausführung ist nicht eingerichtet.
 
-Der Download wird zunächst unter einem temporären Namen gespeichert. Erst nach ZIP-, Header- und Hashprüfung entsteht ein gültiges Abrufprotokoll. Bei einem Netzwerkfehler bleibt die bisherige Quelle verfügbar, der neue Befehl endet mit einem Fehlercode. Nach Behebung kann derselbe Befehl wiederholt werden.
+Der Download wird zunächst unter einem temporären Namen gespeichert. Nach der ZIP- und Spaltenprüfung wird das Abrufprotokoll mit der Prüfsumme geschrieben. Bei einem Netzwerkfehler bleibt die bisherige Quelle erhalten. Der Aufruf endet mit einem Fehlercode und kann nach Behebung des Problems wiederholt werden.
 
-## Fehlerbilder
+## Verhalten bei Änderungen und Fehlern
 
 | Situation | Verhalten / Vorgehen |
 |---|---|
@@ -27,9 +27,9 @@ Der Download wird zunächst unter einem temporären Namen gespeichert. Erst nach
 | Neuer EPA-Qualifier | Abbruch, Code anhand der EPA-Dokumentation prüfen, Regelversion ändern |
 | Host-Speicher knapp | `measure_run.py` startet nicht unter 2 GiB und stoppt bei weniger als 1 GiB Reserve |
 
-Ein bereits festgeschriebener Datenbankstand bleibt auch dann gültig, wenn danach das lokale Schreiben einer JSON-Berichtskopie scheitert. Der Datenbankstatus ist maßgeblich. Ein erneuter `status`-Aufruf und der Laufdatensatz klären diesen seltenen Fall.
+Wenn das Speichern des lokalen JSON-Berichts nach dem Commit scheitert, bleibt der bereits abgeschlossene Datenbankstand gültig. In diesem Fall zeigen der `status`-Aufruf und der Eintrag in `pipeline_run`, ob die Ergebnisse übernommen wurden.
 
-## Sicht auf die Laufhistorie
+## Bisherige Läufe ansehen
 
 ```sh
 docker compose exec -T database psql -U pm10 -d pm10 -c \
@@ -54,7 +54,7 @@ docker compose exec -T database createdb -U pm10_admin -O pm10 pm10_restore_test
 docker compose exec -T database pg_restore -U pm10 -d pm10_restore_test --no-owner < runtime/backups/pm10.dump
 ```
 
-Danach Zeilenzahlen und Ergebnis-Hash mit dem Original vergleichen. Die Testdatenbank kann anschließend ausdrücklich mit `dropdb -U pm10_admin pm10_restore_test` entfernt werden. Niemals einen Restore-Versuch gegen die einzige Ergebniskopie ausführen.
+Danach Zeilenzahlen und Ergebnis-Hash mit dem Original vergleichen. Die Testdatenbank kann anschließend mit `dropdb -U pm10_admin pm10_restore_test` entfernt werden. Niemals einen Restore-Versuch gegen die einzige Ergebniskopie ausführen.
 
 `docker compose down` stoppt Dienste und entfernt das Netzwerk, erhält aber das Datenbank-Volume. **`docker compose down -v` löscht das Volume** und gehört nicht zum normalen Ablauf.
 

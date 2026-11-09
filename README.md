@@ -2,7 +2,7 @@
 
 Die Pipeline verarbeitet stündliche PM10-Messungen der US-Umweltbehörde EPA. Sie lädt die Daten herunter, prüft sie und fasst sie je Messreihe zu Tageswerten zusammen. Die Ergebnisse werden mit Angaben zu Herkunft und Qualität in PostgreSQL gespeichert und können später für Analysen oder Modellversuche genutzt werden.
 
-Der geprüfte Datensatz für 2024 enthält **3.870.976 Beobachtungen**. Daraus wurden **163.381 Tagesdatensätze** berechnet und unabhängig nachgeprüft. Die Ergebnisse stehen im [Prüfbericht](evidence/Pruefbericht.md).
+Der geprüfte Datensatz für 2024 enthält 3.870.976 Beobachtungen. Daraus wurden 163.381 Tagesdatensätze berechnet und unabhängig nachgeprüft. Die Ergebnisse stehen im [Prüfbericht](evidence/Pruefbericht.md).
 
 ## Schnellstart
 
@@ -55,7 +55,7 @@ Die Dienste und ihre Verbindungen stehen in `compose.yaml`, die Qualitätsregeln
 
 Eine Messreihe wird durch Bundesstaat, County, Standort, Parameter und POC identifiziert. POC unterscheidet mehrere Messreihen am selben Standort. Ein Tagesdatensatz enthält unter anderem:
 
-- Datum in **lokaler Standardzeit**, nicht nach Sommerzeit umgerechnet.
+- Datum in lokaler Standardzeit, nicht nach Sommerzeit umgerechnet.
 - Zahl beobachteter und verwendeter Stunden.
 - Mittelwert, Minimum und Maximum der verwendeten Werte.
 - Zahl negativer Werte, Qualitätskennzeichen und Ereignishinweise.
