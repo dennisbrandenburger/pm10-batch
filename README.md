@@ -6,7 +6,14 @@ Der geprüfte Datensatz für 2024 umfasst **3.870.976 Beobachtungen**. Daraus en
 
 ## Schnellstart
 
-Voraussetzungen: laufende Docker-Umgebung mit Compose und Python 3. Für die Docker-VM sind 6 GiB RAM und vier CPU-Kerne vorgesehen. Empfohlen werden 8 GiB freier Plattenplatz.
+Voraussetzungen: Git, Python 3 und eine laufende Docker-Umgebung mit Compose und Linux-Containern. Die Shell-Befehle sind für Linux und macOS vorgesehen. Unter Windows werden sie in einer WSL-2-Distribution mit aktivierter [Docker-Integration](https://docs.docker.com/desktop/features/wsl/) ausgeführt. Für die Docker-VM sind 6 GiB RAM und vier CPU-Kerne vorgesehen. Empfohlen werden 8 GiB freier Plattenplatz.
+
+Repository in dieser Shell holen und in das Verzeichnis wechseln:
+
+```sh
+git clone https://github.com/dennisbrandenburger/pm10-batch.git
+cd pm10-batch
+```
 
 Optional unter macOS mit Colima, vor dem ersten Lauf:
 
@@ -79,6 +86,15 @@ Für eigene Abfragen steht die Tabelle `daily_feature` zur Verfügung. `pipeline
 
 Die zehn Tests decken unter anderem Zeitgrenzen, Qualitätsregeln, doppelte und widersprüchliche Beobachtungen, unvollständige Tage sowie Rollback und Wiederholungsschutz ab. Datenbanktests verwenden die separate Datenbank `pm10_test`. Die unabhängige Nachrechnung des vollständigen Datensatzes und die Wiederherstellung einer Sicherung sind zusätzlich in `evidence/` dokumentiert.
 
+Die genannten Zeilenzahlen beziehen sich auf den geprüften EPA-Datenstand. Beim Start wird die Jahresdatei erneut heruntergeladen. Falls EPA sie aktualisiert, können andere Zahlen entstehen. Der Quellhash in `runtime/source-2024.json` lässt sich mit `evidence/source-2024.json` vergleichen. Die unabhängige Nachrechnung in `scripts/reference_check.py` ist ausdrücklich auf den dokumentierten Referenzbestand begrenzt.
+
+Nach dem vollständigen Lauf lässt sich diese Nachrechnung so ausführen:
+
+```sh
+docker compose run --rm --entrypoint /app/scripts/entrypoint.sh transform \
+  python3 /app/scripts/reference_check.py
+```
+
 Weitere Erläuterungen:
 
 - [Qualitätsregeln und Grenzen](docs/qualitaet.md)
@@ -89,4 +105,4 @@ Weitere Erläuterungen:
 
 ## Projektgrenzen
 
-Geprüft wurde auf einem ARM64-Mac. Die Ausführung auf einem zweiten Rechner und in einem verteilten Spark-Cluster steht noch aus. Ein ML-Modell gehört nicht zum Projekt. Dafür müssten unter anderem Zielvariable, zeitliche Validierung und der Einfluss der Qualitätsauswahl gesondert untersucht werden.
+Geprüft wurde auf einem ARM64-Mac, einschließlich eines frischen Aufbaus aus GitHub mit neuen Zugangsdaten und leerer Datenbank am 09.11.2026. Die [Ergebnisse dieser Wiederholung](evidence/reproduction-check.json) stimmen mit dem ursprünglichen Lauf überein. Die Ausführung auf einem zweiten Rechner, unter Windows/WSL und in einem verteilten Spark-Cluster steht noch aus. Ein ML-Modell gehört nicht zum Projekt. Dafür müssten unter anderem Zielvariable, zeitliche Validierung und der Einfluss der Qualitätsauswahl gesondert untersucht werden.

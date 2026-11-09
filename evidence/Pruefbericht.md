@@ -53,3 +53,11 @@ Der Ergebnishash umfasst sortierte fachliche Tagesfelder. Lauf-IDs und Zeitstemp
 Getestet wurde auf einem physischen ARM64-Mac, nicht auf einem zweiten Rechner oder einem verteilten Cluster. Messwertprüfung ist keine Kalibrierprüfung. Die Auswahl der 18 Stunden ist eine analytische Projektentscheidung. Es wird keine ML-Prognose oder deren Güte behauptet.
 
 Redaktionell überarbeitet am 27.10.2026. Messwerte, Laufprotokolle und der geprüfte Programmstand bleiben unverändert.
+
+## Erneute Einrichtung am 09.11.2026
+
+Eine frische Kopie des GitHub-Commits `20da4854fade9821fa43f1500d9708638a636bab` wurde mit neuen Zugangsdaten, leerem Laufverzeichnis und eigenem Datenbank-Volume eingerichtet. Das Anwendungsimage wurde ohne Build-Layer-Cache neu gebaut. Die Basis-Images und die vorhandene Docker-VM wurden weiterverwendet. Der Test erfolgte auf demselben physischen ARM64-Mac.
+
+Der erneute EPA-Download, das Rechenrezept und die veröffentlichten Ergebnisse haben dieselben Prüfsummen wie der ursprüngliche Lauf. Aus 3.870.976 Beobachtungen entstanden wieder 163.381 Tagesdatensätze. Alle zehn Tests bestanden. Die unabhängige Nachrechnung bestätigte sämtliche Tagesergebnisse. Wiederholungsschutz, README-Abfrage, Datenbankneustart und Restore in eine separate Datenbank funktionierten ebenfalls. Die Verarbeitung einschließlich Aufteilung und Veröffentlichung dauerte 114,556 Sekunden, ohne den vorgelagerten Download.
+
+Die Ergebnisse stehen in [reproduction-check.json](reproduction-check.json). Danach wurden die Startanleitung, die Regel für Shell-Zeilenenden und die Nachweisdokumentation ergänzt. Verarbeitungscode, Schema und fachliche Regeln sind unverändert. Die Ausführung auf AMD64-Hardware und unter Windows/WSL wurde nicht praktisch geprüft.
