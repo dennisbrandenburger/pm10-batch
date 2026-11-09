@@ -1,28 +1,28 @@
 # PM10-Datenpipeline
 
-Die Pipeline lädt stündliche PM10-Messungen der US-Umweltbehörde EPA, prüft die Daten und berechnet Tagesmerkmale je Messreihe. Die Ergebnisse stehen in PostgreSQL für Analysen und spätere Modellversuche bereit.
+Die Pipeline verarbeitet stündliche PM10-Messungen der US-Umweltbehörde EPA. Sie lädt die Daten herunter, prüft sie und fasst sie je Messreihe zu Tageswerten zusammen. Die Ergebnisse werden mit Angaben zu Herkunft und Qualität in PostgreSQL gespeichert und können später für Analysen oder Modellversuche genutzt werden.
 
-Der geprüfte Datensatz für 2024 umfasst **3.870.976 Beobachtungen**. Daraus entstehen **163.381 Tagesdatensätze**, die unabhängig nachgerechnet wurden. Ergebnisse und Testprotokolle stehen im [Prüfbericht](evidence/Pruefbericht.md).
+Der geprüfte Datensatz für 2024 enthält **3.870.976 Beobachtungen**. Daraus wurden **163.381 Tagesdatensätze** berechnet und unabhängig nachgeprüft. Die Ergebnisse stehen im [Prüfbericht](evidence/Pruefbericht.md).
 
 ## Schnellstart
 
-Voraussetzungen: Git, Python 3 und eine laufende Docker-Umgebung mit Compose und Linux-Containern. Die Shell-Befehle sind für Linux und macOS vorgesehen. Unter Windows werden sie in einer WSL-2-Distribution mit aktivierter [Docker-Integration](https://docs.docker.com/desktop/features/wsl/) ausgeführt. Für die Docker-VM sind 6 GiB RAM und vier CPU-Kerne vorgesehen. Empfohlen werden 8 GiB freier Plattenplatz.
+Benötigt werden Git, Python 3 und Docker mit Compose und Linux-Containern. Die folgenden Befehle sind für eine Shell unter Linux oder macOS gedacht. Unter Windows ist eine WSL-2-Distribution mit aktivierter [Docker-Integration](https://docs.docker.com/desktop/features/wsl/) vorgesehen. Für Docker sollten vier CPU-Kerne, 6 GiB RAM und 8 GiB freier Plattenplatz verfügbar sein.
 
-Repository in dieser Shell holen und in das Verzeichnis wechseln:
+Das Repository in dieser Shell klonen:
 
 ```sh
 git clone https://github.com/dennisbrandenburger/pm10-batch.git
 cd pm10-batch
 ```
 
-Optional unter macOS mit Colima, vor dem ersten Lauf:
+Wer unter macOS Colima verwendet, startet vor dem ersten Lauf die Docker-VM:
 
 ```sh
 colima start --profile de-pm10 --cpu 4 --memory 6 --activate=false
 export DOCKER_CONTEXT=colima-de-pm10
 ```
 
-Im Repository-Verzeichnis:
+Anschließend im Repository-Verzeichnis:
 
 ```sh
 ./scripts/setup.sh
@@ -30,26 +30,26 @@ docker compose build transform
 ./scripts/run.sh 2024
 ```
 
-`setup.sh` erzeugt lokale Zugangsdaten und die UID/GID-Konfiguration. `run.sh` startet die Datenbank, lädt die Quelle und verarbeitet sie bei Änderungen erneut. Der Datenbankport bleibt innerhalb des Compose-Netzwerks.
+`setup.sh` erzeugt die Zugangsdaten und übernimmt die lokale Benutzer- und Gruppen-ID für die Dateirechte im Container. `run.sh` startet die Datenbank, lädt die Quelldatei und verarbeitet sie, wenn sich Daten oder Rechenrezept geändert haben. Auch veränderte Ergebnisdaten lösen eine Neuberechnung aus. Der Datenbankport wird nicht am Host freigegeben.
 
-Wo `docker compose` nicht als Plugin installiert ist, verwenden die Skripte automatisch `docker-compose`. Die allgemeinen Befehle lassen sich entsprechend ersetzen.
+Ist Compose als `docker-compose` installiert, erkennen die Skripte das automatisch. In den Befehlen dieser Anleitung muss dann ebenfalls `docker-compose` statt `docker compose` stehen.
 
 ## Komponenten
 
 | Dienst | Aufgabe | Dauerhafte Daten |
 |---|---|---|
-| `ingest` | HTTPS-Download, Größenlimit, ZIP-CRC, Dateiname, Spalten und SHA-256 prüfen | Original-ZIP und Abrufprotokolle in `runtime/raw` und `runtime/manifests` |
-| `transform` | Arbeitskopien erzeugen, Spark-Prüfungen und Tagesaggregation, PostgreSQL-Veröffentlichung | Laufberichte, ausgesonderte Datensätze und Tagesexporte in `runtime/runs` |
-| `database` | Tagesmerkmale, aktive Version und Laufhistorie bereitstellen | Docker-Volume `postgres_data` |
-| `test` | Synthetische Prüfbeispiele und Transaktionstests | Ausschließlich separate Datenbank `pm10_test` |
+| `ingest` | Archiv herunterladen und Größe, ZIP-CRC, Dateiname, Spalten und SHA-256 prüfen | Original-ZIP und Abrufprotokolle in `runtime/raw` und `runtime/manifests` |
+| `transform` | Daten mit Spark prüfen, Tageswerte berechnen und in PostgreSQL speichern | Laufberichte, zurückgestellte Datensätze und Tagesexporte in `runtime/runs` |
+| `database` | Tageswerte und Verarbeitungsläufe speichern | Docker-Volume `postgres_data` |
+| `test` | Qualitätsregeln und Datenbanktransaktionen an gezielten Beispielen prüfen | Separate Testdatenbank `pm10_test` |
 
-Die Verarbeitungsdienste laufen als getrennte Container mit einem gemeinsamen Image. PostgreSQL verwendet ein eigenes Image. Beide Basis-Images sind über Digests festgelegt, die Python-Abhängigkeiten über feste Versionsnummern.
+Die Verarbeitungsdienste nutzen dasselbe Image, laufen aber in getrennten Containern. PostgreSQL hat ein eigenes Image. Die Basis-Images sind über Digests festgelegt, die Python-Pakete über Versionsnummern.
 
-## Orientierung im Code
+## Aufbau des Codes
 
-`scripts/run.sh` startet die Datenbank und führt Aufnahme und Verarbeitung nacheinander aus. Die Befehle sind in `pm10/__main__.py` verbunden. `pm10/ingest.py` lädt und prüft das Archiv, `pm10/transform.py` berechnet mit Spark die Tagesmerkmale, `pm10/store.py` prüft den bisherigen Stand und veröffentlicht neue Ergebnisse in einer Datenbanktransaktion.
+`scripts/run.sh` führt Datenaufnahme und Verarbeitung nacheinander aus. Die zugehörigen Befehle sind in `pm10/__main__.py` definiert. Die Aufgaben verteilen sich auf drei Module: `pm10/ingest.py` lädt und prüft das Archiv, `pm10/transform.py` berechnet die Tageswerte und `pm10/store.py` prüft den vorhandenen Datenstand und speichert neue Ergebnisse in einer Datenbanktransaktion.
 
-`compose.yaml` beschreibt die Dienste und ihre Verbindungen. Die Auswahlregeln stehen in `config/quality.json`, Tabellen und Sichten in `sql/schema.sql`. `tests/` enthält die automatisierten Prüffälle, `evidence/` die Nachweise des vollständigen Datenlaufs.
+Die Dienste und ihre Verbindungen stehen in `compose.yaml`, die Qualitätsregeln in `config/quality.json` und das Datenbankschema in `sql/schema.sql`. Tests liegen unter `tests/`, Prüfprotokolle unter `evidence/`.
 
 ## Was gespeichert wird
 
@@ -63,7 +63,7 @@ Eine Messreihe wird durch Bundesstaat, County, Standort, Parameter und POC ident
 - Kennzeichnung, ob mindestens 18 verwendbare Stunden und genau eine Messmethode vorliegen.
 - Verknüpfung zum Verarbeitungslauf und zum Originalarchiv.
 
-Die Sicht `model_candidates` enthält Tage mit mindestens 18 verwendbaren Stunden und genau einer Messmethode. Diese Auswahlregel dient der späteren Analyse und ist keine amtliche Gültigkeitsbewertung. Die Qualitätszähler bleiben in der Sicht erhalten.
+Über die Datenbanksicht `model_candidates` lassen sich Tage mit mindestens 18 verwendbaren Stunden und genau einer Messmethode abfragen. Die Qualitätszähler sind dort ebenfalls enthalten. Die Auswahl dient der späteren Analyse und ist keine amtliche Gültigkeitsbewertung.
 
 ## Ergebnis ansehen
 
@@ -76,7 +76,7 @@ docker compose exec -T database psql -U pm10 -d pm10 -c \
    LIMIT 10;'
 ```
 
-Für eigene Abfragen steht die Tabelle `daily_feature` zur Verfügung. `pipeline_run` dokumentiert erfolgreiche, fehlgeschlagene oder unterbrochene Läufe. `active_dataset` zeigt die aktuell veröffentlichte Version.
+Alle Tagesdatensätze liegen in `daily_feature`. In `pipeline_run` stehen die erfolgreichen, fehlgeschlagenen oder unterbrochenen Läufe. `active_dataset` zeigt, welcher Stand aktuell verwendet wird.
 
 ## Tests und Nachweise
 
@@ -84,9 +84,9 @@ Für eigene Abfragen steht die Tabelle `daily_feature` zur Verfügung. `pipeline
 ./scripts/test.sh
 ```
 
-Die zehn Tests decken unter anderem Zeitgrenzen, Qualitätsregeln, doppelte und widersprüchliche Beobachtungen, unvollständige Tage sowie Rollback und Wiederholungsschutz ab. Datenbanktests verwenden die separate Datenbank `pm10_test`. Die unabhängige Nachrechnung des vollständigen Datensatzes und die Wiederherstellung einer Sicherung sind zusätzlich in `evidence/` dokumentiert.
+Die zehn Tests prüfen unter anderem Zeitgrenzen, Qualitätsregeln, doppelte und widersprüchliche Beobachtungen, unvollständige Tage sowie Rollback und Wiederholungsschutz. Die Datenbanktests laufen in der separaten Datenbank `pm10_test`. Die Nachrechnung des vollständigen Datensatzes und die Wiederherstellung einer Sicherung sind in `evidence/` dokumentiert.
 
-Die genannten Zeilenzahlen beziehen sich auf den geprüften EPA-Datenstand. Beim Start wird die Jahresdatei erneut heruntergeladen. Falls EPA sie aktualisiert, können andere Zahlen entstehen. Der Quellhash in `runtime/source-2024.json` lässt sich mit `evidence/source-2024.json` vergleichen. Die unabhängige Nachrechnung in `scripts/reference_check.py` ist ausdrücklich auf den dokumentierten Referenzbestand begrenzt.
+Die Zeilenzahlen in diesem Projekt beziehen sich auf den geprüften EPA-Datenstand. Da die Jahresdatei bei jedem Aufruf von `run.sh` neu heruntergeladen wird, können spätere Änderungen der Quelle zu anderen Zahlen führen. Ob dieselbe Datei vorliegt, zeigt ein Vergleich der SHA-256-Prüfsummen in `runtime/source-2024.json` und `evidence/source-2024.json`. Die unabhängige Nachrechnung mit `scripts/reference_check.py` gilt nur für diesen Referenzbestand.
 
 Nach dem vollständigen Lauf lässt sich diese Nachrechnung so ausführen:
 
@@ -105,4 +105,6 @@ Weitere Erläuterungen:
 
 ## Projektgrenzen
 
-Geprüft wurde auf einem ARM64-Mac, einschließlich eines frischen Aufbaus aus GitHub mit neuen Zugangsdaten und leerer Datenbank am 09.11.2026. Die [Ergebnisse dieser Wiederholung](evidence/reproduction-check.json) stimmen mit dem ursprünglichen Lauf überein. Die Ausführung auf einem zweiten Rechner, unter Windows/WSL und in einem verteilten Spark-Cluster steht noch aus. Ein ML-Modell gehört nicht zum Projekt. Dafür müssten unter anderem Zielvariable, zeitliche Validierung und der Einfluss der Qualitätsauswahl gesondert untersucht werden.
+Die Pipeline wurde auf einem ARM64-Mac getestet. Am 09.11.2026 wurde sie zusätzlich aus einer frischen GitHub-Kopie mit neuen Zugangsdaten und leerer Datenbank aufgebaut. Dabei entstanden [dieselben Ergebnisse wie beim ersten Lauf](evidence/reproduction-check.json). Ein zweiter Rechner, Windows/WSL und ein verteilter Spark-Cluster wurden bisher nicht getestet.
+
+Ein ML-Modell gehört nicht zum Projekt. Vor einer solchen Erweiterung müssten unter anderem die Zielvariable, die zeitliche Aufteilung der Trainings- und Testdaten und der Einfluss der Qualitätsauswahl untersucht werden.
