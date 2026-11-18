@@ -61,3 +61,5 @@ Danach Zeilenzahlen und Ergebnis-Hash mit dem Original vergleichen. Die Testdate
 ## Zugangsdaten und Weitergabe
 
 `secrets/`, `.env` und `runtime/` bleiben lokal. Auf einem anderen Rechner erzeugt `setup.sh` neue Zugangsdaten. Das Repository enthält den Code, die Konfiguration, die Dokumentation und die Prüfergebnisse. Rohdaten und Zugangsdaten werden auf dem Zielrechner separat eingerichtet.
+
+Auf einem Linux-Host übernimmt Compose bei dateibasierten Secrets die Dateirechte vom Host. Die Kennwortdateien sind im jeweiligen Container lesbar. Auf dem Host begrenzt das übergeordnete Verzeichnis mit Modus 0700 den Zugriff auf den ausführenden Benutzer. Der Worker erhält nur sein eigenes Kennwort.

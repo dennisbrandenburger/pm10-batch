@@ -1,0 +1,35 @@
+name: Compose
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      reference_run:
+        description: 'EPA-Jahresdatei 2024 verarbeiten und mit der Referenz vergleichen'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Container einrichten
+        run: |
+          ./scripts/setup.sh
+          docker compose build transform
+      - name: Qualität und Transaktionen prüfen
+        run: ./scripts/test.sh
+      - name: Jahresdaten verarbeiten
+        if: inputs.reference_run
+        run: ./scripts/run.sh 2024
+      - name: Tageswerte aus dem Originalarchiv nachrechnen
+        if: inputs.reference_run
+        run: |
+          docker compose run --rm --entrypoint /app/scripts/entrypoint.sh transform python3 /app/scripts/reference_check.py
+          docker compose run --rm transform status
