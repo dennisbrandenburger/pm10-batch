@@ -35,6 +35,26 @@ Der Mittelwert ist die Summe der verwendeten Stundenwerte geteilt durch deren An
 
 Es gibt keine Unsicherheitsgewichtung. Die ausgewertete Quelle liefert dafür keine ausgefüllte Unsicherheitsspalte. Negative MDL-Metadaten werden nicht pauschal als Messfehler interpretiert.
 
+## Einfluss der Mindestabdeckung
+
+Bei unveränderter Auswahl der Qualitätskennzeichen und genau einer Messmethode pro Tag ergeben sich für den Referenzstand 2024 folgende Fallzahlen. Gezählt wird jeder Tag einer Messreihe einmal.
+
+| Mindestzahl verwendbarer Stunden | Tagesdatensätze |
+| ---: | ---: |
+| 12 | 154.214 |
+| 18 | 152.985 |
+| 24 | 140.235 |
+
+Mit 24 statt 18 Stunden fallen weitere 12.750 Tage weg. Wie sich fehlende Stunden auf die Höhe des Mittelwerts auswirken, lässt sich aus der Fallzahl allein nicht ableiten. Die Zahlen können nach dem Datenlauf in PostgreSQL mit dieser Abfrage geprüft werden.
+
+```sql
+SELECT count(*) FILTER (WHERE n_usable >= 12) AS ab_12,
+       count(*) FILTER (WHERE n_usable >= 18) AS ab_18,
+       count(*) FILTER (WHERE n_usable = 24) AS alle_24
+FROM daily_feature
+WHERE dataset = 'epa_pm10_2024' AND n_methods = 1;
+```
+
 ## Grenzen der Prüfung
 
 Die Regeln kontrollieren Schema, Konsistenz und dokumentierte Kennzeichen. Sie ersetzen keine Kalibrierprotokolle, Stationsprüfung oder Rückfrage beim Datenlieferanten. Für ein späteres Modell sind unter anderem eine Sensitivitätsanalyse zu negativen Werten und zurückgestellten QA-Fällen sowie eine zeitlich getrennte Evaluation erforderlich. Ein beobachteter Tageswert allein erlaubt noch keine belastbare Vorhersage.

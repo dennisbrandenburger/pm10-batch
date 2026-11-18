@@ -2,36 +2,23 @@
 
 ## Datengrundlage
 
-U.S. Environmental Protection Agency. (o. J.). *AirData: Download files*. https://aqs.epa.gov/aqsweb/airdata/download_files.html
+Die US-Umweltbehörde EPA führt die Jahresdatei für 2024 unter „Hourly Data“, PM10 Mass (81102). In der [Downloadübersicht](https://aqs.epa.gov/aqsweb/airdata/download_files.html) gibt sie den Datenstand mit 25. Juni 2026 an.
 
-Verarbeitete Jahresdatei: https://aqs.epa.gov/aqsweb/airdata/hourly_81102_2024.zip
+U.S. Environmental Protection Agency. (25. Juni 2026). *PM10 mass (81102), 2024* [Datensatz mit Stundenmessungen]. AirData. https://aqs.epa.gov/aqsweb/airdata/hourly_81102_2024.zip
 
-Die Erstprüfung erfolgte am 22.10.2026. Für den dokumentierten Lauf wurde die Datei am 26.10.2026 erneut direkt von EPA heruntergeladen. Abrufzeit, HTTP-Metadaten, Größe und SHA-256 stehen in `evidence/source-2024.json` und im Laufbericht. Das ZIP umfasst 32.122.063 Bytes, die enthaltene CSV 1.089.505.956 Bytes. Referenzhash: `2db9732577123284e7f94b581b135c30feae5c7c2d8623d1def66db722d78da4`.
+Für den dokumentierten Lauf vom 26.10.2026 wurde die Datei direkt von der EPA heruntergeladen. Das ZIP umfasst 32.122.063 Bytes, die CSV darin 1.089.505.956 Bytes. Abrufzeit, HTTP-Metadaten und SHA-256 stehen in [source-2024.json](../evidence/source-2024.json).
 
-U.S. Environmental Protection Agency. (o. J.). *AirData file formats*. https://aqs.epa.gov/aqsweb/airdata/FileFormats.html
+U.S. Environmental Protection Agency. (1. Dezember 2015). *AirData download files documentation* (Version 3.0.0). https://aqs.epa.gov/aqsweb/airdata/FileFormats.html
 
-Verwendet für Spaltenbedeutung, Messreihenkennung, lokale Standardzeit und GMT sowie die Einschränkung auf das höchstrangige Qualitätskennzeichen.
+Abschnitt 1.1 definiert eine Messreihe. Abschnitt 6.2 beschreibt unter anderem die lokale Standardzeit, GMT und die Beschränkung auf das jeweils höchstrangige Qualitätskennzeichen.
 
-U.S. Environmental Protection Agency. (o. J.). *AQS qualifier codes*. https://aqs.epa.gov/aqsweb/documents/codetables/qualifiers.html
-
-Die am 22.10.2026 gesicherte CSV-Tabelle liegt unter `docs/epa_qualifiers.csv`. Die Codebeschreibungen wurden am 26.10.2026 gegen die EPA-Seite geprüft. `config/quality.json` ergänzt diese Beschreibungen um die im Projekt festgelegten Verarbeitungsregeln.
-
-U.S. Environmental Protection Agency. (o. J.). *About AQS data*. https://aqs.epa.gov/aqsweb/documents/about_aqs_data.html
-
-Verwendet zur Einordnung der Datenherkunft und der Grenzen einer automatischen Qualitätsprüfung.
+Die [AQS-Tabelle der Qualitätskennzeichen](https://aqs.epa.gov/aqsweb/documents/codetables/qualifiers.html) ist als [lokaler Datenstand vom 22.10.2026](epa_qualifiers.csv) gesichert. Die Beschreibungen wurden am 26.10.2026 mit der EPA-Tabelle abgeglichen. Die Entscheidungen über die Verarbeitung der Kennzeichen sind im Projekt in [quality.json](../config/quality.json) festgelegt. Die EPA beschreibt die Herkunft der Messungen in ihrer [Einführung in das Air Quality System](https://aqs.epa.gov/aqsweb/documents/about_aqs_data.html).
 
 ## Technische Dokumentation
 
-Apache Software Foundation. (2026). *Apache Spark 4.2.0 documentation*. https://spark.apache.org/docs/4.2.0/
+- [Apache Spark 4.2.0](https://spark.apache.org/docs/4.2.0/) und [Spark-Containerimages](https://github.com/apache/spark-docker)
+- [Zugangsdaten in Docker Compose](https://docs.docker.com/compose/how-tos/use-secrets/)
+- [Sperren in PostgreSQL 17](https://www.postgresql.org/docs/17/explicit-locking.html) und [Transaktionen](https://www.postgresql.org/docs/17/tutorial-transactions.html)
+- [COPY mit Psycopg 3](https://www.psycopg.org/psycopg3/docs/basic/copy.html)
 
-Apache Software Foundation. (2026). *Spark Docker images*. https://github.com/apache/spark-docker
-
-Docker, Inc. (o. J.). *Use secrets in Docker Compose*. https://docs.docker.com/compose/how-tos/use-secrets/
-
-PostgreSQL Global Development Group. (o. J.). *PostgreSQL 17: Explicit locking*. https://www.postgresql.org/docs/17/explicit-locking.html
-
-PostgreSQL Global Development Group. (o. J.). *PostgreSQL 17: Transactions*. https://www.postgresql.org/docs/17/tutorial-transactions.html
-
-Psycopg Team. (o. J.). *Using COPY TO and COPY FROM*. https://www.psycopg.org/psycopg3/docs/basic/copy.html
-
-Technische Dokumentation zuletzt geprüft am 26.10.2026. Die Laufmessungen und Testergebnisse liegen separat unter `evidence/`.
+Die Laufmessungen und Testergebnisse des Projekts stehen unter [evidence](../evidence/).
