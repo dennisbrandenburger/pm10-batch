@@ -105,6 +105,6 @@ Weitere Erläuterungen:
 
 ## Projektgrenzen
 
-Die Pipeline wurde auf einem ARM64-Mac getestet. Am 09.11.2026 wurde sie zusätzlich aus einer frischen GitHub-Kopie mit neuen Zugangsdaten und leerer Datenbank aufgebaut. Dabei entstanden [dieselben Ergebnisse wie beim ersten Lauf](evidence/reproduction-check.json). Ein zweiter Rechner, Windows/WSL und ein verteilter Spark-Cluster wurden bisher nicht getestet.
+Der vollständige Jahrgang 2024 wurde auf einem ARM64-Mac und auf einem frischen Ubuntu-24.04-Rechner (x86_64) verarbeitet. Beide Läufe lieferten dieselbe Ergebnisprüfsumme. Auf Ubuntu bestanden sämtliche zehn Tests und die unabhängige Nachrechnung aller Tageswerte. Unter „Actions → Compose → Run workflow“ kann der Lauf mit der Option für die Jahresdaten wiederholt werden. Er benötigt Zugriff auf die EPA-Datei und die Paketquellen. [Ubuntu-Protokoll](https://github.com/dennisbrandenburger/pm10-batch/actions/runs/44286957413) · [Messwerte](evidence/ubuntu-2024.json) · [Prüfung auf dem Mac](evidence/reproduction-check.json). Windows/WSL und ein verteilter Cluster wurden bisher nicht praktisch geprüft.
 
 Ein ML-Modell gehört nicht zum Projekt. Vor einer solchen Erweiterung müssten unter anderem die Zielvariable, die zeitliche Aufteilung der Trainings- und Testdaten und der Einfluss der Qualitätsauswahl untersucht werden.

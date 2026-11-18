@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-18",
+  "platform": "Ubuntu 24.04, x86_64 (GitHub-hosted runner)",
+  "tested_commit": "111b88563432b6bba2ec3c92ffe66e344491d745",
+  "run_url": "https://github.com/dennisbrandenburger/pm10-batch/actions/runs/44286957413",
+  "tests_passed": 10,
+  "input_rows": 3870976,
+  "daily_rows": 163381,
+  "eligible_days": 152985,
+  "source_sha256": "2db9732577123284e7f94b581b135c30feae5c7c2d8623d1def66db722d78da4",
+  "recipe_sha256": "a005c8383974db3134868b2e92cbbb528a23ef4de3911aeed2a8cb9c6e8c817a",
+  "result_sha256": "a0f65aeaf86ff9f6501cddafbd6e40f18cee7bff5592def8c87013d5462c71bc",
+  "pipeline_seconds_excluding_download": 123.94,
+  "reference": {
+    "input_rows": 3870976,
+    "daily_rows_checked": 163381,
+    "missing_days": 0,
+    "differences": [],
+    "max_absolute_float_error": 1.1368683772161603e-13,
+    "seconds": 34.82,
+    "method": "Independent streaming Python csv + Decimal aggregation, all daily rows; known duplicate-free snapshot",
+    "passed": true
+  }
+}
