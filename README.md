@@ -32,6 +32,8 @@ docker compose build transform
 
 `setup.sh` erzeugt die Zugangsdaten und übernimmt die lokale Benutzer- und Gruppen-ID für die Dateirechte im Container. `run.sh` startet die Datenbank, lädt die Quelldatei und verarbeitet sie, wenn sich Daten oder Rechenrezept geändert haben. Auch veränderte Ergebnisdaten lösen eine Neuberechnung aus. Der Datenbankport wird nicht am Host freigegeben.
 
+Für den Datenstand aus dem Portfolioarchiv gibt es einen [Start mit lokaler Jahresdatei](docs/betrieb.md#lauf-mit-einer-lokalen-jahresdatei). Er funktioniert auch bei einer Unterbrechung des EPA-Downloads.
+
 Ist Compose als `docker-compose` installiert, erkennen die Skripte das automatisch. In den Befehlen dieser Anleitung muss dann ebenfalls `docker-compose` statt `docker compose` stehen.
 
 ## Komponenten

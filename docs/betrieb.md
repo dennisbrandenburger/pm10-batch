@@ -12,6 +12,22 @@ Im laufenden Betrieb würden beispielsweise das aktuelle und das vorherige Jahr 
 
 Der Download wird zunächst unter einem temporären Namen gespeichert. Nach der ZIP- und Spaltenprüfung wird das Abrufprotokoll mit der Prüfsumme geschrieben. Bei einem Netzwerkfehler bleibt die bisherige Quelle erhalten. Der Aufruf endet mit einem Fehlercode und kann nach Behebung des Problems wiederholt werden.
 
+## Lauf mit einer lokalen Jahresdatei
+
+Das vollständige Portfolioarchiv enthält die EPA-Datei unter `Daten/hourly_81102_2024.zip`. Nach dem Entpacken im Verzeichnis `pm10-batch` die folgenden Befehle ausführen. Wer bereits einen separaten Git-Checkout eingerichtet hat, kann die Jahresdatei aus dem Archiv direkt in dessen Verzeichnis `runtime` kopieren.
+
+```sh
+./scripts/setup.sh
+docker compose build transform
+cp ../Daten/hourly_81102_2024.zip runtime/hourly_81102_2024.zip
+docker compose up -d --wait database
+docker compose run --rm ingest ingest --year 2024 --archive /data/hourly_81102_2024.zip --expected-sha256 2db9732577123284e7f94b581b135c30feae5c7c2d8623d1def66db722d78da4
+docker compose run --rm transform run --year 2024
+docker compose run --rm --entrypoint /app/scripts/entrypoint.sh transform python3 /app/scripts/reference_check.py
+```
+
+Das Abrufprotokoll vermerkt die lokale Herkunft. Die letzte Prüfung rechnet alle 163.381 Tagesdatensätze direkt aus dem archivierten Original nach. Für den erstmaligen Aufbau der Container können die Image- und Paketquellen weiterhin erforderlich sein.
+
 ## Verhalten bei Änderungen und Fehlern
 
 | Situation | Verhalten / Vorgehen |
